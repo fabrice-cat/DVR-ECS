@@ -1,0 +1,11 @@
+#!/bin/bash
+rm *.dat *.out
+source /opt/intel-2020/compilers_and_libraries_2020.0.166/linux/mkl/bin/mklvars.sh intel64
+ulimit -s unlimited
+ifort -O3 -c util.f90 coulombwave.f90 potential.f90 tridiag.f90 tools.f90 prop.f90 main.f90
+gcc -c ccode.c
+ifort -mkl util.o potential.o coulombwave.o main.o tridiag.o tools.o prop.o ccode.o -o TDSE_1D_DVRECS_1.out
+rm *.dat
+#nohup ./TDSE_1D_DVR_1.out >> exit_file.txt &
+./TDSE_1D_DVRECS_1.out
+rm *.o
